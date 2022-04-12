@@ -38,7 +38,7 @@ wire forget;
 
 wire [7:0] Nk;
 				
-reg rst_buf;
+reg rst_buf, rst_buf2;
 
 initial begin
 	rst_buf = 0;
@@ -50,8 +50,10 @@ end
 // assign forget = neuro_write_address == neuro_write_base;
 assign forget = 0;
 
-always @(posedge clk)
+always @(posedge clk) begin
 	rst_buf <= reset;
+	rst_buf2 <= rst_buf;
+end
 
 reg read, read_1, read_2;
 
@@ -75,7 +77,7 @@ Instruction_RAM Instruction_RAM_instance(
 AddressGenerator AddressGenerator_instance(
 	.clk(clk),
 	.reset(rst_buf | reset),
-	.read(read | read_1),
+	.read(read | read_1 | read_2),
 	.Nk(Nk),
 	.read_weight_base_addr(weight_read_base),
 	.read_neuro_base_addr(neuro_read_base),
@@ -106,7 +108,7 @@ MAC_Core ALU (
 	.weight(weight),
 	.in(value),
 	.oe(1'b1),
-	.reset(reset | read | read_1),
+	.reset(reset | read | read_1 | read_2),
 	.clk(clk),
 	.forget(forget),
 	.out(out)
