@@ -30,10 +30,24 @@ wire [7:0] 	neuro_write_address,
 				weight,
 				value;
 				
+wire forget;
+reg [1:0] ctr;
+				
 reg rst_buf;
 
-initial
+initial begin
 	rst_buf = 0;
+	ctr = 2'b11;
+end
+	
+always @(posedge clk) begin
+	if(reset)
+		ctr <= 2'b11;
+	else
+		ctr <= ctr + 1;
+end
+
+assign forget = ctr == 0;
 
 always @(negedge clk)
 	rst_buf <= reset;
@@ -68,6 +82,7 @@ MAC_Core ALU (
 	.oe(1'b1),
 	.reset(reset),
 	.clk(clk),
+	.forget(forget),
 	.out(out)
 );
 

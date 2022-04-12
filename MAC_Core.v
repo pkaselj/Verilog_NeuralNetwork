@@ -20,12 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 module MAC_Core(
 	input [7:0] weight, in,
-	input oe, reset, clk,
+	input oe, reset, clk, forget,
 	output [7:0] out
 );
 
 reg [7:0] accumulator, internal_weight, internal_value;
 wire [7:0] accumulator_next;
+wire	[7:0] accumulator_state;
 
 initial begin
 	accumulator = 0;
@@ -44,10 +45,10 @@ always @(posedge clk) begin
 		internal_weight <= weight;
 		internal_value <= in;
 	end
-
 end
 
-assign accumulator_next = accumulator + internal_weight * internal_value;
+assign accumulator_state = (forget) ? 8'b0000000 : accumulator;
+assign accumulator_next = accumulator_state + internal_weight * internal_value;
 assign out = (oe && !reset) ? accumulator : 8'bzzzzzzzz;
 
 endmodule
