@@ -20,21 +20,40 @@
 //////////////////////////////////////////////////////////////////////////////////
 module AddressGenerator(
 input [7:0] Nk,
+input [7:0] read_weight_base_addr, read_neuro_base_addr, write_neuro_base_addr,
 input clk, reset, read,
 output finished,
 output [7:0] weight_read_addr, neuro_read_addr, neuro_write_addr
 );
 
+/*
 localparam
 	W_R_BASE = 8'h00,
 	N_R_BASE = 8'h00,
 	N_W_BASE = 8'h00;
+*/
 
+reg [7:0] W_R_BASE, N_R_BASE, N_W_BASE;
 reg [7:0] internal_Nk, internal_Nk_1;
 
 initial begin
+	W_R_BASE = 0;
+	N_R_BASE = 0;
+	N_W_BASE = 0;
 	internal_Nk = 0;
 	internal_Nk_1 = 0;
+end
+
+always @(posedge clk) begin
+	if(reset) begin
+		W_R_BASE <= 0;
+		N_R_BASE <= 0;
+		N_W_BASE <= 0;
+	end else if (read) begin
+		W_R_BASE <= read_weight_base_addr;
+		N_R_BASE <= read_neuro_base_addr;
+		N_W_BASE <= write_neuro_base_addr;
+	end
 end
 
 always @(posedge clk) begin

@@ -29,6 +29,9 @@ module AddressGenerator_test;
 	reg reset;
 	reg read;
 	reg [7:0] Nk;
+	reg [7:0] weight_read_base_addr;
+	reg [7:0] neuro_read_base_addr;
+	reg [7:0] neuro_write_base_addr;
 
 	// Outputs
 	wire [7:0] weight_read_addr;
@@ -42,6 +45,9 @@ module AddressGenerator_test;
 		.reset(reset),
 		.read(read),
 		.Nk(Nk),
+		.read_weight_base_addr(weight_read_base_addr),
+		.read_neuro_base_addr(neuro_read_base_addr),
+		.write_neuro_base_addr(neuro_write_base_addr),
 		.finished(finished),
 		.weight_read_addr(weight_read_addr), 
 		.neuro_read_addr(neuro_read_addr), 
@@ -54,6 +60,9 @@ module AddressGenerator_test;
 		reset = 0;
 		read = 1;
 		Nk = 3;
+		weight_read_base_addr = 1;
+	   neuro_read_base_addr = 2;
+		neuro_write_base_addr = 3;
 		
 		#5 Nk = 4;
 		#5 read = 0;
