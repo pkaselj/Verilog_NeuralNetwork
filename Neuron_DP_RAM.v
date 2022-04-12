@@ -1,0 +1,44 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    02:49:11 04/12/2022 
+// Design Name: 
+// Module Name:    Neuron_DP_RAM 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module Neuron_DP_RAM(
+	input [7:0] read_address, write_address, write_data,
+	input oe, wre, clk,
+	output [7:0] read_data
+);
+
+reg [7:0] mem [127:0];
+
+initial begin
+	mem[0] = 10;
+	mem[1] = 10;
+	mem[2] = 11;
+	mem[3] = 11;
+end
+
+assign read_data = oe ? mem[read_address] : 8'bzzzzzzzz;
+
+always @(posedge clk) begin
+	if(wre)
+		mem[write_address] <= write_data;
+end
+
+
+endmodule
