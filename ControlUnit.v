@@ -65,7 +65,7 @@ end
 
 always @(*) begin
 	case(state)
-		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_RST | OUT_AG_READ | OUT_ALU_RST);
+		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
 		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
 		STATE_RESET_2: next_out = (reset) ? OUT_DEFAULT : 0;
 		STATE_CALCULATE: next_out = (reset) ? OUT_DEFAULT : 0;

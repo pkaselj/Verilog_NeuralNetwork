@@ -44,9 +44,17 @@ initial begin
 	weight_read_base = 0;
 end
 
+wire finished, neuron_finished;
+
+
+reg neuron_finished_1, neuron_finished_2;
+always @(posedge clk) begin
+	neuron_finished_1 <= neuron_finished;
+	neuron_finished_2 <= neuron_finished_1;
+end
+
 // assign forget = neuro_write_address == neuro_write_base;
-assign forget = 0;
-wire finished;
+assign forget = neuron_finished_2;
 
 wire AG_rst, AG_read, ALU_rst;
 
@@ -69,6 +77,7 @@ AddressGenerator AddressGenerator_instance(
 	.reset(AG_rst),
 	.read(AG_read),
 	.Nk(Nk),
+	.neuron_finished(neuron_finished),
 	.read_weight_base_addr(weight_read_base),
 	.read_neuro_base_addr(neuro_read_base),
 	.write_neuro_base_addr(neuro_write_base),

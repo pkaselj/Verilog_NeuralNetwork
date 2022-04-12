@@ -22,7 +22,7 @@ module AddressGenerator(
 input [7:0] Nk,
 input [7:0] read_weight_base_addr, read_neuro_base_addr, write_neuro_base_addr,
 input clk, reset, read,
-output finished,
+output finished, neuron_finished,
 output [7:0] weight_read_addr, neuro_read_addr, neuro_write_addr
 );
 
@@ -69,6 +69,7 @@ end
 reg [7:0] ctrWR, ctrVR, ctrVW;
 
 assign finished = (ctrVR == internal_Nk_1 - 1) && (ctrVW == internal_Nk - 1);
+assign neuron_finished = ctrVR_Overflow;
 
 wire [7:0] next_ctrVR, next_ctrVW;
 wire ctrVR_Overflow;

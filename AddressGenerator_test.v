@@ -37,7 +37,7 @@ module AddressGenerator_test;
 	wire [7:0] weight_read_addr;
 	wire [7:0] neuro_read_addr;
 	wire [7:0] neuro_write_addr;
-	wire finished;
+	wire finished, neuron_finished;
 
 	// Instantiate the Unit Under Test (UUT)
 	AddressGenerator uut (
@@ -45,6 +45,7 @@ module AddressGenerator_test;
 		.reset(reset),
 		.read(read),
 		.Nk(Nk),
+		.neuron_finished(neuron_finished),
 		.read_weight_base_addr(weight_read_base_addr),
 		.read_neuro_base_addr(neuro_read_base_addr),
 		.write_neuro_base_addr(neuro_write_base_addr),

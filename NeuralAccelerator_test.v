@@ -43,7 +43,7 @@ module NeuralAccelerator_test;
 		clk = 0;
 		reset = 1;
 		
-		#4; reset = 0;
+		#5; reset = 0;
 		
 		#100 $stop;
         

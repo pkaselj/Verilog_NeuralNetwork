@@ -31,6 +31,10 @@ initial begin
 	mem[1] = 10;
 	mem[2] = 11;
 	mem[3] = 11;
+	mem[4] = 2;
+	mem[5] = 3;
+	mem[6] = 2;
+	mem[7] = 3;
 end
 
 assign read_data = oe ? mem[read_address] : 8'bzzzzzzzz;

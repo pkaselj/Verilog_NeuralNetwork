@@ -50,9 +50,9 @@ module ControlUnit_test;
 		#5 reset = 0;
 
 		// Wait 100 ns for global reset to finish
-		#100;
-		
-		$stop;
+		#50 reset = 1;
+		#5	 reset = 0;
+		#50 $stop;
         
 		// Add stimulus here
 
