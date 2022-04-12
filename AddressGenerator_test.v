@@ -27,16 +27,22 @@ module AddressGenerator_test;
 	// Inputs
 	reg clk;
 	reg reset;
+	reg read;
+	reg [7:0] Nk;
 
 	// Outputs
 	wire [7:0] weight_read_addr;
 	wire [7:0] neuro_read_addr;
 	wire [7:0] neuro_write_addr;
+	wire finished;
 
 	// Instantiate the Unit Under Test (UUT)
 	AddressGenerator uut (
 		.clk(clk),
 		.reset(reset),
+		.read(read),
+		.Nk(Nk),
+		.finished(finished),
 		.weight_read_addr(weight_read_addr), 
 		.neuro_read_addr(neuro_read_addr), 
 		.neuro_write_addr(neuro_write_addr)
@@ -46,15 +52,17 @@ module AddressGenerator_test;
 		// Initialize Inputs
 		clk = 0;
 		reset = 0;
+		read = 1;
+		Nk = 3;
 		
-		#40 reset = 1;
-		#10 reset = 0;
+		#5 Nk = 4;
+		#5 read = 0;
 		
-		#20 $stop;
+		#20 
 
 		// Wait 100 ns for global reset to finish
 		#100;
-        
+      $stop;
 		// Add stimulus here
 
 	end
