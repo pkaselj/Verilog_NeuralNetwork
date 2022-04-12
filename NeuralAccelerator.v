@@ -36,7 +36,7 @@ reg [7:0]   neuro_read_base,
 				
 wire forget;
 
-reg [7:0] Nk;
+wire [7:0] Nk;
 				
 reg rst_buf;
 
@@ -45,7 +45,6 @@ initial begin
 	neuro_read_base = 0;
 	neuro_write_base = 10;
 	weight_read_base = 0;
-	Nk = 4;
 end
 
 // assign forget = neuro_write_address == neuro_write_base;
@@ -66,6 +65,12 @@ always @(posedge clk) begin
 end
 
 wire finished;
+
+Instruction_RAM Instruction_RAM_instance(
+	.address(0),
+	.data(Nk),
+	.enable(1'b1)
+);
 
 AddressGenerator AddressGenerator_instance(
 	.clk(clk),
