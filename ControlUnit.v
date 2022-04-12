@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module ControlUnit(
-input clk, reset,
+input clk, reset, forget,
 output AG_rst, AG_read, ALU_rst
 );
 
@@ -31,7 +31,8 @@ parameter
 	
 parameter
 	EVENT_CLK = 0,
-	EVENT_RESET = 1;
+	EVENT_RESET = 1,
+	EVENT_FORGET = 2;
 	
 parameter
 	OUT_DEFAULT = 3'b101,
@@ -59,7 +60,9 @@ always @(*) begin
 		STATE_RESET_0: next_state = (reset) ? STATE_RESET_0 : STATE_RESET_1;
 		STATE_RESET_1: next_state = (reset) ? STATE_RESET_0 : STATE_RESET_2;
 		STATE_RESET_2: next_state = (reset) ? STATE_RESET_0 : STATE_CALCULATE;
-		STATE_CALCULATE: next_state = (reset) ? STATE_RESET_0 : STATE_CALCULATE;
+		STATE_CALCULATE: next_state = (reset)  ? STATE_RESET_0 :
+												(forget) ? STATE_RESET_2 : STATE_CALCULATE;
+		default: next_state = STATE_RESET_0;
 	endcase
 end
 
@@ -68,7 +71,9 @@ always @(*) begin
 		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
 		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
 		STATE_RESET_2: next_out = (reset) ? OUT_DEFAULT : 0;
-		STATE_CALCULATE: next_out = (reset) ? OUT_DEFAULT : 0;
+		STATE_CALCULATE: next_out = (reset)  ? OUT_DEFAULT :
+											 (forget) ? OUT_AG_READ : 0;
+		default: next_out = OUT_DEFAULT;
 	endcase
 end
 

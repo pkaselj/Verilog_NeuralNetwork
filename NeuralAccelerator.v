@@ -74,6 +74,7 @@ wire AG_rst, AG_read, ALU_rst;
 ControlUnit CU(
 	.clk(clk),
 	.reset(reset),
+	.forget(finished_2),
 	.AG_rst(AG_rst),
 	.AG_read(AG_read),
 	.ALU_rst(ALU_rst)
