@@ -40,7 +40,7 @@ wire [7:0] Nk;
 
 initial begin
 	neuro_read_base = 0;
-	neuro_write_base = 10;
+	neuro_write_base = 0;
 	weight_read_base = 0;
 end
 
