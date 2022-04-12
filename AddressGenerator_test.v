@@ -72,6 +72,7 @@ module AddressGenerator_test;
 
 		// Wait 100 ns for global reset to finish
 		#100;
+		#100;
       $stop;
 		// Add stimulus here
 

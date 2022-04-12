@@ -32,7 +32,8 @@ wire [7:0] 	neuro_write_address,
 				
 reg [7:0]   neuro_read_base,
 				neuro_write_base,
-				weight_read_base;
+				weight_read_base,
+				instruction_pointer;
 				
 wire forget;
 
@@ -42,10 +43,22 @@ initial begin
 	neuro_read_base = 0;
 	neuro_write_base = 0;
 	weight_read_base = 0;
+	instruction_pointer = 0;
+	finished_1 = 0;
+	finished_2 = 0;
 end
 
 wire finished, neuron_finished;
+wire next_ip;
+assign next_ip = (finished_2) ? instruction_pointer + 1 : instruction_pointer;
 
+always @(posedge clk) instruction_pointer <= next_ip;
+
+reg finished_1, finished_2;
+always @(posedge clk) begin
+	finished_1 <= finished;
+	finished_2 <= finished_1;
+end
 
 reg neuron_finished_1, neuron_finished_2;
 always @(posedge clk) begin
@@ -67,7 +80,7 @@ ControlUnit CU(
 );
 
 Instruction_RAM Instruction_RAM_instance(
-	.address(0),
+	.address(instruction_pointer),
 	.data(Nk),
 	.enable(1'b1)
 );

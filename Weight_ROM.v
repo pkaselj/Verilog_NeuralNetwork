@@ -35,6 +35,30 @@ initial begin
 	mem[5] = 5;
 	mem[6] = 5;
 	mem[7] = 2;
+	mem[8] = 1;
+	mem[9] = 3;
+	mem[10] = 2;
+	mem[11] = 5;
+	mem[12] = 6;
+	mem[13] = 5;
+	mem[14] = 5;
+	mem[15] = 2;
+	mem[16] = 1;
+	mem[17] = 3;
+	mem[18] = 2;
+	mem[19] = 5;
+	mem[20] = 6;
+	mem[21] = 5;
+	mem[22] = 5;
+	mem[23] = 2;
+	mem[24] = 1;
+	mem[25] = 3;
+	mem[26] = 2;
+	mem[27] = 5;
+	mem[28] = 6;
+	mem[29] = 5;
+	mem[30] = 5;
+	mem[31] = 2;
 end
 
 assign data = enable ? mem[address] : 8'bzzzzzzzz;
