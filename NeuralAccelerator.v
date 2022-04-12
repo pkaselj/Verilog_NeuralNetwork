@@ -30,31 +30,52 @@ wire [7:0] 	neuro_write_address,
 				weight,
 				value;
 				
+reg [7:0]   neuro_read_base,
+				neuro_write_base,
+				weight_read_base;
+				
 wire forget;
-reg [1:0] ctr;
+
+reg [7:0] Nk;
 				
 reg rst_buf;
 
 initial begin
 	rst_buf = 0;
-	ctr = 2'b11;
-end
-	
-always @(posedge clk) begin
-	if(reset)
-		ctr <= 2'b11;
-	else
-		ctr <= ctr + 1;
+	neuro_read_base = 0;
+	neuro_write_base = 10;
+	weight_read_base = 0;
+	Nk = 4;
 end
 
-assign forget = ctr == 0;
+// assign forget = neuro_write_address == neuro_write_base;
+assign forget = 0;
 
-always @(negedge clk)
+always @(posedge clk)
 	rst_buf <= reset;
+
+reg read, read_1, read_2;
+
+always @(posedge clk) begin
+	read_1 <= read;
+	read_2 <= read_1;
+	if(reset)
+		read <= 1;
+	else
+		read <= 0;
+end
+
+wire finished;
 
 AddressGenerator AddressGenerator_instance(
 	.clk(clk),
 	.reset(rst_buf | reset),
+	.read(read | read_1),
+	.Nk(Nk),
+	.read_weight_base_addr(weight_read_base),
+	.read_neuro_base_addr(neuro_read_base),
+	.write_neuro_base_addr(neuro_write_base),
+	.finished(finished),
 	.neuro_write_addr(neuro_write_address),
 	.neuro_read_addr(neuro_read_address),
 	.weight_read_addr(weight_read_address)
@@ -71,7 +92,7 @@ Neuron_DP_RAM Neuron_DP_RAM_instance(
 	.write_address(neuro_write_address), 
 	.write_data(out), 
 	.oe(1'b1), 
-	.wre(1'b1),
+	.wre(1'b0),
 	.clk(clk),
 	.read_data(value)
 );
@@ -80,7 +101,7 @@ MAC_Core ALU (
 	.weight(weight),
 	.in(value),
 	.oe(1'b1),
-	.reset(reset),
+	.reset(reset | read | read_1),
 	.clk(clk),
 	.forget(forget),
 	.out(out)
