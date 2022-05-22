@@ -35,6 +35,19 @@ localparam
 
 reg [7:0] W_R_BASE, N_R_BASE, N_W_BASE;
 reg [7:0] internal_Nk, internal_Nk_1;
+reg [7:0] ctrWR, ctrVR, ctrVW;
+wire [7:0] next_ctrVR, next_ctrVW;
+wire ctrVR_Overflow;
+
+assign finished = (ctrVR == internal_Nk_1 - 1) && (ctrVW == internal_Nk - 1);
+assign neuron_finished = ctrVR_Overflow;
+assign ctrVR_Overflow = ctrVR == internal_Nk_1 - 1;
+assign next_ctrVR = (ctrVR_Overflow) ? 0 : ctrVR + 1;
+assign next_ctrVW = (ctrVR_Overflow) ? ctrVW + 1 : ctrVW;
+
+assign weight_read_addr = W_R_BASE + ctrWR;
+assign neuro_read_addr = N_R_BASE + ctrVR;
+assign neuro_write_addr = N_W_BASE + ctrVW;
 
 initial begin
 	W_R_BASE = 0;
@@ -66,17 +79,6 @@ always @(posedge clk) begin
 	end
 end
 
-reg [7:0] ctrWR, ctrVR, ctrVW;
-
-assign finished = (ctrVR == internal_Nk_1 - 1) && (ctrVW == internal_Nk - 1);
-assign neuron_finished = ctrVR_Overflow;
-
-wire [7:0] next_ctrVR, next_ctrVW;
-wire ctrVR_Overflow;
-assign ctrVR_Overflow = ctrVR == internal_Nk_1 - 1;
-assign next_ctrVR = (ctrVR_Overflow) ? 0 : ctrVR + 1;
-assign next_ctrVW = (ctrVR_Overflow) ? ctrVW + 1 : ctrVW;
-
 always @(posedge clk) begin
 	if(reset || read) begin
 		ctrWR <= 0;
@@ -88,9 +90,5 @@ always @(posedge clk) begin
 		ctrVW <= next_ctrVW;
 	end
 end
-
-assign weight_read_addr = W_R_BASE + ctrWR;
-assign neuro_read_addr = N_R_BASE + ctrVR;
-assign neuro_write_addr = N_W_BASE + ctrVW;
 
 endmodule
