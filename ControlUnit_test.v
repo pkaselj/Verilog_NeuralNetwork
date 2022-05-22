@@ -27,25 +27,30 @@ module ControlUnit_test;
 	// Inputs
 	reg clk;
 	reg reset;
+	reg forget;
 
 	// Outputs
 	wire AG_rst;
 	wire AG_read;
 	wire ALU_rst;
+	wire ALU_forget;
 
 	// Instantiate the Unit Under Test (UUT)
 	ControlUnit uut (
-		.clk(clk), 
+		.clk(clk),
+		.forget(forget),
 		.reset(reset), 
 		.AG_rst(AG_rst), 
 		.AG_read(AG_read), 
-		.ALU_rst(ALU_rst)
+		.ALU_rst(ALU_rst),
+		.ALU_forget(ALU_forget)
 	);
 
 	initial begin
 		// Initialize Inputs
 		clk = 0;
 		reset = 1;
+		forget = 0;
 		
 		#5 reset = 0;
 

@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module ControlUnit(
 input clk, reset, forget,
-output AG_rst, AG_read, ALU_rst
+output AG_rst, AG_read, ALU_rst, ALU_forget
 );
 
 parameter
@@ -35,15 +35,16 @@ parameter
 	EVENT_FORGET = 2;
 	
 parameter
-	OUT_DEFAULT = 3'b101,
-	OUT_AG_RST = 3'b100,
-	OUT_AG_READ = 3'b010,
-	OUT_ALU_RST = 3'b001;
+	OUT_DEFAULT = 4'b1011,
+	OUT_AG_RST = 4'b1000,
+	OUT_AG_READ = 4'b0100,
+	OUT_ALU_RST = 4'b0010,
+	OUT_ALU_FORGET = 4'b0001;
 
 reg [7:0] state, next_state;
-reg [2:0] out, next_out;
+reg [3:0] out, next_out;
 
-assign {AG_rst, AG_read, ALU_rst} = out;
+assign {AG_rst, AG_read, ALU_rst, ALU_forget} = out;
 
 initial begin
 	state = STATE_RESET_0;
@@ -68,11 +69,11 @@ end
 
 always @(*) begin
 	case(state)
-		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
-		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
+		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST | OUT_ALU_FORGET);
+		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST | OUT_ALU_FORGET);
 		STATE_RESET_2: next_out = (reset) ? OUT_DEFAULT : 0;
 		STATE_CALCULATE: next_out = (reset)  ? OUT_DEFAULT :
-											 (forget) ? OUT_AG_READ : 0;
+											 (forget) ? (OUT_AG_READ | OUT_ALU_FORGET) : 0;
 		default: next_out = OUT_DEFAULT;
 	endcase
 end
