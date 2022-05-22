@@ -61,13 +61,27 @@ initial begin
 	finished_2 = 0;
 end
 
+wire [7:0] 	next_neuro_read_base_address,
+				next_neuro_write_base_address,
+				next_weight_read_base_address;
+				
+assign next_neuro_read_base_address = (reset) ? 0 : (finished) ? neuro_read_address + 1 : neuro_read_base; 
+assign next_neuro_write_base_address = (reset) ? 0 : (finished) ? neuro_write_address + 1 : neuro_write_base; 
+assign next_weight_read_base_address = (reset) ? 0 : (finished) ? weight_read_address + 1 : weight_read_base;
+
 always @(posedge clk) begin
-	if(finished) begin
-		neuro_read_base <= neuro_read_address;
-		neuro_write_base <= neuro_write_address;
-		weight_read_base <= weight_read_address;
-	end
+	neuro_read_base <= next_neuro_read_base_address;
+	neuro_write_base <= next_neuro_write_base_address;
+	weight_read_base <= next_weight_read_base_address;
 end
+
+//always @(posedge clk) begin
+//	if(finished) begin
+//		neuro_read_base <= neuro_read_address;
+//		neuro_write_base <= neuro_write_address;
+//		weight_read_base <= weight_read_address;
+//	end
+//end
 
 always @(posedge clk) instruction_pointer <= next_ip;
 
@@ -106,9 +120,9 @@ AddressGenerator AddressGenerator_instance(
 	.read(AG_read | finished),
 	.Nk(Nk),
 	.neuron_finished(neuron_finished),
-	.read_weight_base_addr(weight_read_base),
-	.read_neuro_base_addr(neuro_read_base),
-	.write_neuro_base_addr(neuro_write_base),
+	.read_weight_base_addr(next_weight_read_base_address),
+	.read_neuro_base_addr(next_neuro_read_base_address),
+	.write_neuro_base_addr(next_neuro_write_base_address),
 	.finished(finished),
 	.neuro_write_addr(neuro_write_address),
 	.neuro_read_addr(neuro_read_address),
