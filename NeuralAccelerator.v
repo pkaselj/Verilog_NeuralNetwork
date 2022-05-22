@@ -61,7 +61,13 @@ initial begin
 	finished_2 = 0;
 end
 
-
+always @(posedge clk) begin
+	if(finished) begin
+		neuro_read_base <= neuro_read_address;
+		neuro_write_base <= neuro_write_address;
+		weight_read_base <= weight_read_address;
+	end
+end
 
 always @(posedge clk) instruction_pointer <= next_ip;
 
