@@ -28,13 +28,13 @@ reg [7:0] mem [127:0];
 
 initial begin
 	mem[0] = 10;
-	mem[1] = 10;
-	mem[2] = 11;
+	mem[1] = 11;
+	mem[2] = 10;
 	mem[3] = 11;
-	mem[4] = 2;
-	mem[5] = 3;
-	mem[6] = 2;
-	mem[7] = 3;
+	mem[4] = 4;
+	mem[5] = 5;
+	mem[6] = 3;
+	mem[7] = 2;
 end
 
 assign read_data = oe ? mem[read_address] : 8'bzzzzzzzz;
