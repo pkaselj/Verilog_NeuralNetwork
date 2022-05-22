@@ -50,7 +50,7 @@ wire AG_rst, AG_read, ALU_rst;
 // assign forget = neuron_finished_2 | ALU_forget;
 assign forget = neuron_finished_2;
 
-assign next_ip = (finished) ? instruction_pointer + 1 : instruction_pointer;
+assign next_ip = (reset) ? 0 : (finished | AG_read) ? instruction_pointer + 1 : instruction_pointer;
 
 initial begin
 	neuro_read_base = 0;
