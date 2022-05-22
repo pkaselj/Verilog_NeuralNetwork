@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 module ControlUnit(
 input clk, reset, forget,
-output AG_rst, AG_read, ALU_rst, ALU_forget
+output AG_rst, AG_read, ALU_rst
 );
 
 parameter
@@ -69,11 +69,11 @@ end
 
 always @(*) begin
 	case(state)
-		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST | OUT_ALU_FORGET);
-		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST | OUT_ALU_FORGET);
+		STATE_RESET_0: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
+		STATE_RESET_1: next_out = (reset) ? OUT_DEFAULT : (OUT_AG_READ | OUT_ALU_RST);
 		STATE_RESET_2: next_out = (reset) ? OUT_DEFAULT : 0;
 		STATE_CALCULATE: next_out = (reset)  ? OUT_DEFAULT :
-											 (forget) ? (OUT_AG_READ | OUT_ALU_FORGET) : 0;
+											 (forget) ? (OUT_AG_READ) : 0;
 		default: next_out = OUT_DEFAULT;
 	endcase
 end

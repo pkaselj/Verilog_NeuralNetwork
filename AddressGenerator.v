@@ -80,7 +80,7 @@ always @(posedge clk) begin
 end
 
 always @(posedge clk) begin
-	if(reset || read) begin
+	if(reset || read || finished) begin
 		ctrWR <= 0;
 		ctrVR <= 0;
 		ctrVW <= 0;

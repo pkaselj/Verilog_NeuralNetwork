@@ -36,7 +36,6 @@ reg [7:0]   neuro_read_base,
 				instruction_pointer;
 				
 wire forget;
-wire ALU_forget;
 
 wire [7:0] Nk;
 wire finished, neuron_finished;
@@ -48,7 +47,8 @@ reg neuron_finished_1, neuron_finished_2;
 wire AG_rst, AG_read, ALU_rst;
 
 // assign forget = neuro_write_address == neuro_write_base;
-assign forget = neuron_finished_2 | ALU_forget;
+// assign forget = neuron_finished_2 | ALU_forget;
+assign forget = neuron_finished_2;
 
 assign next_ip = (finished_2) ? instruction_pointer + 1 : instruction_pointer;
 
@@ -85,8 +85,7 @@ ControlUnit CU(
 	.forget(finished),
 	.AG_rst(AG_rst),
 	.AG_read(AG_read),
-	.ALU_rst(ALU_rst),
-	.ALU_forget(ALU_forget)
+	.ALU_rst(ALU_rst)
 );
 
 Instruction_RAM Instruction_RAM_instance(
