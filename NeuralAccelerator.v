@@ -24,6 +24,9 @@ module NeuralAccelerator(
 	output [7:0] out
 );
 
+parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
+						NEURO_RW_BASE_HIGH = 20;
+
 wire [7:0] 	neuro_write_address,
 				neuro_read_address,
 				weight_read_address,
@@ -53,8 +56,8 @@ assign forget = neuron_finished_2;
 assign next_ip = (reset) ? 0 : (finished | AG_read) ? instruction_pointer + 1 : instruction_pointer;
 
 initial begin
-	neuro_read_base = 0;
-	neuro_write_base = 0;
+	neuro_read_base = NEURO_RW_BASE_LOW;
+	neuro_write_base = NEURO_RW_BASE_HIGH;
 	weight_read_base = 0;
 	instruction_pointer = 0;
 	finished_1 = 0;
@@ -65,8 +68,12 @@ wire [7:0] 	next_neuro_read_base_address,
 				next_neuro_write_base_address,
 				next_weight_read_base_address;
 				
-assign next_neuro_read_base_address = (reset) ? 0 : (finished) ? neuro_read_address + 1 : neuro_read_base; 
-assign next_neuro_write_base_address = (reset) ? 0 : (finished) ? neuro_write_address + 1 : neuro_write_base; 
+wire is_IP_even;
+assign is_IP_even = (instruction_pointer[0] == 0);
+				
+assign next_neuro_read_base_address = 	(is_IP_even) ? NEURO_RW_BASE_HIGH : NEURO_RW_BASE_LOW;																	
+assign next_neuro_write_base_address = (is_IP_even) ? NEURO_RW_BASE_LOW : NEURO_RW_BASE_HIGH;
+																		
 assign next_weight_read_base_address = (reset) ? 0 : (finished) ? weight_read_address + 1 : weight_read_base;
 
 always @(posedge clk) begin
