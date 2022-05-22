@@ -62,7 +62,8 @@ always @(posedge clk) begin
 		W_R_BASE <= 0;
 		N_R_BASE <= 0;
 		N_W_BASE <= 0;
-	end else if (read) begin
+//	end else if (read) begin
+	end else begin
 		W_R_BASE <= read_weight_base_addr;
 		N_R_BASE <= read_neuro_base_addr;
 		N_W_BASE <= write_neuro_base_addr;
