@@ -103,7 +103,7 @@ Instruction_RAM Instruction_RAM_instance(
 AddressGenerator AddressGenerator_instance(
 	.clk(clk),
 	.reset(AG_rst),
-	.read(AG_read),
+	.read(AG_read | finished),
 	.Nk(Nk),
 	.neuron_finished(neuron_finished),
 	.read_weight_base_addr(weight_read_base),
