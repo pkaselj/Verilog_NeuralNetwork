@@ -24,7 +24,7 @@ module Weight_ROM(
 	output [7:0] data
 );
 
-reg [7:0] mem [127:0];
+reg [7:0] mem [31:0];
 
 initial begin
 	mem[0] = 1;

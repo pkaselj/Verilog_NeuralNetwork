@@ -23,8 +23,10 @@ module NeuralAccelerator(
 	input reset,
 	output finished,
 	/* ADD INPUT ADDRESS AND DATA LINES + WE */
+	output [7:0] data_out,
 	output [7:0] 	result_base_address,
-						result_word_count
+						result_word_count,
+						current_data
 );
 
 parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
@@ -164,7 +166,7 @@ Instruction_RAM Instruction_RAM_instance(
 	.enable(1'b1)
 );
 
-AddressGenerator AddressGenerator_instance(
+ AddressGenerator AddressGenerator_instance(
 	.clk(clk),
 	.reset(AG_rst),
 	.read(AG_read | finished_layer),
@@ -181,26 +183,30 @@ AddressGenerator AddressGenerator_instance(
 	.previous_layer_size(previous_layer_size)
 );
 
-Weight_ROM Weight_ROM_instance(
+ Weight_ROM Weight_ROM_instance(
 	.address(weight_read_address),
 	.data(weight),
-	.enable(1'b1)
+	.enable(1)
 );
 
-Neuron_DP_RAM Neuron_DP_RAM_instance(
+ Neuron_DP_RAM Neuron_DP_RAM_instance(
 	.read_address(neuro_read_address), 
 	.write_address(neuro_write_address_2), 
 	.write_data(out), 
-	.oe(1'b1), 
+	.oe(1), 
 	.wre(neuron_finished_2),
 	.clk(clk),
-	.read_data(value)
+	.read_data(value),
+	/* DEBUG */
+	.read_data_offset20(data_out)
 );
 
-MAC_Core ALU (
+assign current_data = out;
+
+ MAC_Core ALU (
 	.weight(weight),
 	.in(value),
-	.oe(1'b1),
+	.oe(1),
 	.reset(ALU_rst),
 	.clk(clk),
 	.forget(forget),

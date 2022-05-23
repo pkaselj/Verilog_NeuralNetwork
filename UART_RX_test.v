@@ -31,18 +31,14 @@ module UART_RX_test;
 
 	// Outputs
 	wire [7:0] data_out;
-	wire [1:0] test_state;
 	wire done; 
-	wire test;
 	// Instantiate the Unit Under Test (UUT)
 	UART_RX uut (
 		.clk(clk), 
 		.rx(rx), 
 		.enable(enable), 
 		.data_out(data_out), 
-		.done(done),
-		.test(test),
-		.test_state(test_state)
+		.done(done)
 	);
 
 	initial begin

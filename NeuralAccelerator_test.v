@@ -29,14 +29,17 @@ module NeuralAccelerator_test;
 	reg reset;
 
 	// Outputs
-	wire [7:0] result_base_address, result_word_count;
+	wire [7:0] result_base_address, result_word_count, data_out;
+	wire finished;
 
 	// Instantiate the Unit Under Test (UUT)
 	NeuralAccelerator uut (
 		.clk(clk), 
-		.reset(reset), 
+		.reset(reset),
+		.finished(finished),		
 		.result_base_address(result_base_address),
-		.result_word_count(result_word_count)
+		.result_word_count(result_word_count),
+		.data_out(data_out)
 	);
 
 	initial begin

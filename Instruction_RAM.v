@@ -26,7 +26,11 @@ module Instruction_RAM(
 
 parameter [7:0] 	END_OF_PROGRAM = 8'b1111_1111;
 
-reg [7:0] mem [127:0];
+reg [7:0] mem [0:4];
+
+//initial begin
+//	$readmemh("instruction_memory.mem", mem);
+//end
 
 assign data = enable ? mem[address] : 8'bzzzzzzzz;
 

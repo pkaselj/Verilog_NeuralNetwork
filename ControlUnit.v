@@ -23,6 +23,8 @@ input clk, reset, forget,
 output AG_rst, AG_read, ALU_rst
 );
 
+wire ALU_forget;
+
 parameter
 	STATE_RESET_0 = 0,
 	STATE_RESET_1 = 1,
@@ -48,7 +50,7 @@ assign {AG_rst, AG_read, ALU_rst, ALU_forget} = out;
 
 initial begin
 	state = STATE_RESET_0;
-	out = 3'b111;
+	out = 4'b1111;
 end
 
 always @(posedge clk) begin

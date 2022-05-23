@@ -35,7 +35,8 @@ wire buffered_reset = reset || reset_1;
 
 assign accumulator_state = (buffered_reset || forget) ? 8'b0000000 : accumulator;
 assign accumulator_next = accumulator_state + internal_weight * internal_value;
-assign out = (oe && !reset) ? accumulator : 8'bzzzzzzzz;
+//assign out = (oe && !reset) ? accumulator : 8'bzzzzzzzz;
+assign out = (oe && !reset) ? accumulator : 0;
 
 always @(posedge clk) reset_1 <= reset;
 
