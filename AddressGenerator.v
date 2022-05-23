@@ -18,13 +18,20 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module AddressGenerator(
-input [7:0] Nk,
-input [7:0] read_weight_base_addr, read_neuro_base_addr, write_neuro_base_addr,
+module AddressGenerator
+#(
+	parameter IP_DATA_BUS_WIDTH = 16,
+	parameter NEURON_ADDRESS_BUS_WIDTH = 8,
+	parameter WEIGHTS_ADDRESS_BUS_WIDTH = 16
+)(
+input [IP_DATA_BUS_WIDTH - 1:0] Nk,
+input [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0] read_weight_base_addr,
+input [NEURON_ADDRESS_BUS_WIDTH - 1:0] read_neuro_base_addr, write_neuro_base_addr,
 input clk, reset, read,
 output finished, neuron_finished,
-output [7:0] weight_read_addr, neuro_read_addr, neuro_write_addr,
-				 current_layer_size, previous_layer_size
+output [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0] weight_read_addr,
+output [NEURON_ADDRESS_BUS_WIDTH - 1:0] neuro_read_addr, neuro_write_addr,
+output [IP_DATA_BUS_WIDTH - 1:0] current_layer_size, previous_layer_size
 );
 
 /*
@@ -34,10 +41,12 @@ localparam
 	N_W_BASE = 8'h00;
 */
 
-reg [7:0] W_R_BASE, N_R_BASE, N_W_BASE;
-reg [7:0] internal_Nk, internal_Nk_1;
-reg [7:0] ctrWR, ctrVR, ctrVW;
-wire [7:0] next_ctrVR, next_ctrVW;
+reg [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0] W_R_BASE;
+reg [NEURON_ADDRESS_BUS_WIDTH - 1:0] N_R_BASE, N_W_BASE;
+reg [IP_DATA_BUS_WIDTH - 1:0] internal_Nk, internal_Nk_1;
+reg [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0] ctrWR;
+reg [NEURON_ADDRESS_BUS_WIDTH - 1:0] ctrVR, ctrVW;
+wire [NEURON_ADDRESS_BUS_WIDTH - 1:0] next_ctrVR, next_ctrVW;
 wire ctrVR_Overflow;
 
 assign current_layer_size = internal_Nk;

@@ -18,49 +18,100 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module MAC_Core(
-	input [7:0] weight, in,
+module MAC_Core
+#(
+parameter N = 8,
+parameter N_ACC = 32
+)(
+	input [N - 1:0] weight, in,
 	input oe, reset, clk, forget,
-	output [7:0] out
+	output [N - 1:0] out
 );
 
-reg [7:0] accumulator;
-reg [7:0] internal_weight;
-reg [7:0] internal_value;
-wire [7:0] accumulator_next;
-wire	[7:0] accumulator_state;
-wire [7:0] result;
+wire [N_ACC - 1:0] weight_upscaled,
+						 value_upscaled;
+						 
+SI_UPSCALER
+#(
+	.N_IN(N),
+	.N_OUT(N_ACC)
+)
+up1 (
+	.in(weight),
+	.out(weight_upscaled)
+);
+
+
+SI_UPSCALER
+#(
+	.N_IN(N),
+	.N_OUT(N_ACC)
+)
+up2
+(
+	.in(in),
+	.out(value_upscaled)
+);
+
+reg [N_ACC - 1:0] accumulator;
+reg [N_ACC - 1:0]	internal_weight,
+						internal_value;
+					
+wire [N_ACC - 1:0] accumulator_next,
+					accumulator_state,
+					result;
 
 reg reset_1;
 wire buffered_reset = reset || reset_1;
 
-wire [7:0] weight_mpy_value;
+wire [N_ACC - 1:0] weight_mpy_value;
 
 
-SI_MPY #(8) multiplicator (
+SI_MPY #(N_ACC) multiplicator (
 	.A(internal_weight),
 	.B(internal_value),
 	.A_MPY_B(weight_mpy_value)
 );
 
-SI_ADD #(8) adder (
+SI_ADD #(N_ACC) adder (
 	.A(accumulator_state),
 	.B(weight_mpy_value),
 	.A_ADD_B(accumulator_next)
 );
 
-assign accumulator_state = (buffered_reset || forget) ? 8'b0000000 : accumulator;
+assign accumulator_state = (buffered_reset || forget) ? {N_ACC{1'b0}} : accumulator;
 //assign out = (oe && !reset) ? accumulator : 8'bzzzzzzzz;
 assign result = (oe && !reset) ? accumulator : 0;
 
-ReLU #(8) relu (
+wire [N - 1:0] result_downscaled;
+
+
+// M0 and SHIFT used to dequantize NN output
+// M = M0 * 2 ** (-SHIFT)
+SI_DOWNSCALER_QUANT
+#(
+	.N_IN(N_ACC),
+	.N_OUT(N),
+	.M0_0Q32(1932735283), // 0.45 (0Q32)
+	.SHIFT(10)
+)
+downscaler
+(
 	.in(result),
-	.out(out)
+	.out(result_downscaled)
 );
 
+
+// DEBUG
+
+assign out = result_downscaled;
+
+//ReLU #(N) relu (
+//	.in(result_downscaled),
+//	.out(out)
+//);
+
 always @(posedge clk) reset_1 <= reset;
-
-
 
 initial begin
 	accumulator = 0;
@@ -73,8 +124,8 @@ always @(posedge clk) begin
 		internal_weight <= 0;
 		internal_value <= 0;
 	end else begin
-		internal_weight <= weight;
-		internal_value <= in;
+		internal_weight <= weight_upscaled;
+		internal_value <= value_upscaled;
 	end
 end
 

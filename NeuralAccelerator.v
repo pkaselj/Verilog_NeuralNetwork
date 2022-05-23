@@ -18,51 +18,73 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module NeuralAccelerator(
+module NeuralAccelerator
+#(
+parameter IP_DATA_BUS_WIDTH = 16,
+parameter IP_ADDRESS_BUS_WIDTH = 8,
+parameter NEURON_DATA_BUS_WIDTH = 8,
+parameter NEURON_ADDRESS_BUS_WIDTH = 11,
+parameter WEIGHTS_DATA_BUS_WIDTH = 8,
+parameter WEIGHTS_ADDRESS_BUS_WIDTH = 15
+)
+(
 	input clk,
 	input reset,
-	input [7:0] 	neuron_ram_write_adr_ext,
-						neuron_ram_write_data_ext,
+	input [NEURON_ADDRESS_BUS_WIDTH - 1 :0]
+						neuron_ram_write_adr_ext,
 						neuron_ram_read_adr_ext,
+	input [NEURON_DATA_BUS_WIDTH - 1 : 0] 
+						neuron_ram_write_data_ext,
+						
 	input 	 		neuron_ram_wr_en_ext,
 	output 			finished,
-	output [7:0] 	neuron_ram_read_data_ext,
-	output reg [7:0] result_base_address,
+	output [NEURON_DATA_BUS_WIDTH - 1:0] neuron_ram_read_data_ext,
+	output reg [NEURON_ADDRESS_BUS_WIDTH - 1:0]
+						  result_base_address,
 						  result_word_count
 );
 
-parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
-						NEURO_RW_BASE_HIGH = 20;
+parameter [NEURON_ADDRESS_BUS_WIDTH - 1:0]
+						NEURO_RW_BASE_LOW = 0,
+						NEURO_RW_BASE_HIGH = 1000;
 
-wire [7:0] 	neuro_write_address,
-				neuro_read_address,
-				weight_read_address,
-				weight,
-				value;
+wire [NEURON_ADDRESS_BUS_WIDTH - 1:0]
+				neuro_write_address,
+				neuro_read_address;
+				
+wire [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0] weight_read_address;
+				
+wire [WEIGHTS_DATA_BUS_WIDTH - 1:0] weight;
+wire [NEURON_DATA_BUS_WIDTH - 1:0] value;
 				
 //reg [7:0]   neuro_read_base,
-reg [7:0]   neuro_write_base,
-				weight_read_base,
-				instruction_pointer;
+reg [NEURON_ADDRESS_BUS_WIDTH - 1:0]  neuro_write_base;
+reg [WEIGHTS_ADDRESS_BUS_WIDTH - 1:0]  weight_read_base;
+reg [IP_ADDRESS_BUS_WIDTH - 1:0]  instruction_pointer;
 				
 wire forget;
 
 wire hold;
 assign hold = reset | finished;
 
-wire [7:0] out;
+wire [NEURON_DATA_BUS_WIDTH - 1:0] out;
 
-wire [7:0] Nk;
+wire [IP_DATA_BUS_WIDTH - 1 :0] Nk;
+wire [IP_ADDRESS_BUS_WIDTH - 1 :0] next_ip;
+		
 wire finished_layer, neuron_finished;
-wire [7:0] next_ip;
 
 //reg finished_layer_1 /*, finished_layer_2*/;
-reg neuron_finished_1, neuron_finished_2;
-reg [7:0] neuro_write_address_1, neuro_write_address_2;
+reg 	neuron_finished_1,
+		neuron_finished_2;
+
+reg [NEURON_ADDRESS_BUS_WIDTH - 1 :0]
+		neuro_write_address_1,
+		neuro_write_address_2;
 
 wire AG_rst, AG_read, ALU_rst;
 
-wire [7:0] current_layer_size, previous_layer_size;
+wire [IP_DATA_BUS_WIDTH - 1 :0] current_layer_size, previous_layer_size;
 wire program_finished;
 
 reg finished_1, finished_2;
@@ -78,7 +100,7 @@ always @(posedge clk) begin
 	end
 end
 
-parameter [7:0] 	END_OF_PROGRAM = 8'b1111_1111;
+parameter [IP_DATA_BUS_WIDTH - 1 :0] 	END_OF_PROGRAM = {IP_DATA_BUS_WIDTH{1'b1}};
 assign program_finished = (current_layer_size == END_OF_PROGRAM);
 
 
@@ -118,9 +140,11 @@ always @(posedge clk) begin
 	end
 end
 
-wire [7:0] 	next_neuro_read_base_address,
-				next_neuro_write_base_address,
-				next_weight_read_base_address;
+wire [NEURON_ADDRESS_BUS_WIDTH - 1 :0]
+				next_neuro_read_base_address,
+				next_neuro_write_base_address;
+				
+wire [WEIGHTS_ADDRESS_BUS_WIDTH - 1 :0]	next_weight_read_base_address;
 				
 wire is_IP_even;
 assign is_IP_even = (instruction_pointer[0] == 0);
@@ -165,12 +189,18 @@ assign select_external_bus = reset | finished;
 
 assign neuron_ram_read_data_ext = value;
 
-wire [7:0] 	neuron_read_address_bus_interface,
-				neuro_write_address_bus_interface,
-				neuro_write_data_bus_interface;
+wire [NEURON_ADDRESS_BUS_WIDTH - 1 :0] 	neuron_read_address_bus_interface,
+				neuro_write_address_bus_interface;
+				
+wire [NEURON_DATA_BUS_WIDTH - 1:0] neuro_write_data_bus_interface;
 wire 			neuro_wr_en_wire_interface;
 
-BusArbiter Arbiter(
+BusArbiter
+#(
+	.DATA_BUS_WIDTH(NEURON_DATA_BUS_WIDTH),
+	.ADDRESS_BUS_WIDTH(NEURON_ADDRESS_BUS_WIDTH)
+)
+Arbiter(
 		.neuron_read_address_ext(neuron_ram_read_adr_ext),
 		.neuron_read_address_int(neuro_read_address),
 		
@@ -200,13 +230,24 @@ ControlUnit CU(
 	.ALU_rst(ALU_rst)
 );
 
-Instruction_RAM Instruction_RAM_instance(
+Instruction_RAM
+#(
+	.DATA_BUS_WIDTH(IP_DATA_BUS_WIDTH),
+	.ADDRESS_BUS_WIDTH(IP_ADDRESS_BUS_WIDTH)
+)
+Instruction_RAM_instance(
 	.address(instruction_pointer),
 	.data(Nk),
 	.enable(1'b1)
 );
 
- AddressGenerator AddressGenerator_instance(
+AddressGenerator
+#(
+	.IP_DATA_BUS_WIDTH(IP_DATA_BUS_WIDTH),
+	.WEIGHTS_ADDRESS_BUS_WIDTH(WEIGHTS_ADDRESS_BUS_WIDTH),
+	.NEURON_ADDRESS_BUS_WIDTH(NEURON_ADDRESS_BUS_WIDTH)
+)
+AddressGenerator_instance(
 	.clk(clk),
 	.reset(AG_rst),
 	.read(AG_read | finished_layer),
@@ -223,17 +264,27 @@ Instruction_RAM Instruction_RAM_instance(
 	.previous_layer_size(previous_layer_size)
 );
 
- Weight_ROM Weight_ROM_instance(
+Weight_ROM
+#(
+	.DATA_BUS_WIDTH(WEIGHTS_DATA_BUS_WIDTH),
+	.ADDRESS_BUS_WIDTH(WEIGHTS_ADDRESS_BUS_WIDTH)
+)
+Weight_ROM_instance(
 	.address(weight_read_address),
 	.data(weight),
-	.enable(1)
+	.enable(1'b1)
 );
 
- Neuron_DP_RAM Neuron_DP_RAM_instance(
+Neuron_DP_RAM
+#(
+	.DATA_BUS_WIDTH(NEURON_DATA_BUS_WIDTH),
+	.ADDRESS_BUS_WIDTH(NEURON_ADDRESS_BUS_WIDTH)
+)
+Neuron_DP_RAM_instance(
 	.read_address(neuron_read_address_bus_interface), 
 	.write_address(neuro_write_address_bus_interface), 
 	.write_data(neuro_write_data_bus_interface), 
-	.oe(1), 
+	.oe(1'b1), 
 	.wre(neuro_wr_en_wire_interface),
 	.clk(clk),
 	.read_data(value)
@@ -243,10 +294,12 @@ Instruction_RAM Instruction_RAM_instance(
 
 //assign current_data = out;
 
- MAC_Core ALU (
+MAC_Core
+#(.N(NEURON_DATA_BUS_WIDTH))
+ALU (
 	.weight(weight),
 	.in(value),
-	.oe(1),
+	.oe(1'b1),
 	.reset(ALU_rst),
 	.clk(clk),
 	.forget(forget),

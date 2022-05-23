@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/ise/Desktop/NerualNetwork/NeuralAccelerator_test_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="NeuralAccelerator_test" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="23" />
+   <wvobject fp_name="/NeuralAccelerator_test/out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuro_write_address" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">neuro_write_address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">neuro_write_address[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuro_read_address" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">neuro_read_address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">neuro_read_address[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/weight_read_address" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">weight_read_address[7:0]</obj_property>
+      <obj_property name="ObjectShortName">weight_read_address[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/weight" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">weight[7:0]</obj_property>
+      <obj_property name="ObjectShortName">weight[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/value" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">value[7:0]</obj_property>
+      <obj_property name="ObjectShortName">value[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/forget" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">forget</obj_property>
+      <obj_property name="ObjectShortName">forget</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/Nk" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">Nk[7:0]</obj_property>
+      <obj_property name="ObjectShortName">Nk[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/finished" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">finished</obj_property>
+      <obj_property name="ObjectShortName">finished</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuron_finished" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">neuron_finished</obj_property>
+      <obj_property name="ObjectShortName">neuron_finished</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/AG_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">AG_rst</obj_property>
+      <obj_property name="ObjectShortName">AG_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/AG_read" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">AG_read</obj_property>
+      <obj_property name="ObjectShortName">AG_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/ALU_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">ALU_rst</obj_property>
+      <obj_property name="ObjectShortName">ALU_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuro_read_base" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">neuro_read_base[7:0]</obj_property>
+      <obj_property name="ObjectShortName">neuro_read_base[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuro_write_base" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">neuro_write_base[7:0]</obj_property>
+      <obj_property name="ObjectShortName">neuro_write_base[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/weight_read_base" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">weight_read_base[7:0]</obj_property>
+      <obj_property name="ObjectShortName">weight_read_base[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuron_finished_1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">neuron_finished_1</obj_property>
+      <obj_property name="ObjectShortName">neuron_finished_1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/neuron_finished_2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">neuron_finished_2</obj_property>
+      <obj_property name="ObjectShortName">neuron_finished_2</obj_property>
+   </wvobject>
+</wave_config>

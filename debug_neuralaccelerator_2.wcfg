@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="/home/ise/Desktop/NerualNetwork/NeuralAccelerator_test_isim_beh1.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="NeuralAccelerator_test" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="8" />
+   <wvobject fp_name="/NeuralAccelerator_test/out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">out[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/ALU/weight" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">weight[7:0]</obj_property>
+      <obj_property name="ObjectShortName">weight[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/ALU/in" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">in[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/ALU/accumulator_next" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">accumulator_next[7:0]</obj_property>
+      <obj_property name="ObjectShortName">accumulator_next[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/ALU/accumulator" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">accumulator[7:0]</obj_property>
+      <obj_property name="ObjectShortName">accumulator[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/uut/forget" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">forget</obj_property>
+      <obj_property name="ObjectShortName">forget</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/reset" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/NeuralAccelerator_test/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+</wave_config>

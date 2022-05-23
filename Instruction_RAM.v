@@ -18,15 +18,19 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Instruction_RAM(
-	input [7:0] address,
+module Instruction_RAM
+#(parameter DATA_BUS_WIDTH = 16,
+parameter ADDRESS_BUS_WIDTH = 8)
+(
+	input [ADDRESS_BUS_WIDTH - 1:0] address,
 	input enable,
-	output [7:0] data
+	output [DATA_BUS_WIDTH - 1:0] data
 );
 
-parameter [7:0] 	END_OF_PROGRAM = 8'b1111_1111;
+localparam [DATA_BUS_WIDTH - 1:0] END_OF_PROGRAM = {DATA_BUS_WIDTH{1'b1}};
+localparam MEM_LOCATIONS = 2 ** ADDRESS_BUS_WIDTH;
 
-reg [7:0] mem [0:255];
+reg [DATA_BUS_WIDTH - 1:0] mem [0:MEM_LOCATIONS - 1];
 
 initial begin
 	$readmemh("instructions.txt", mem);
@@ -40,6 +44,6 @@ end
 //	mem[4] = END_OF_PROGRAM;
 //end
 
-assign data = enable ? mem[address] : 8'bzzzzzzzz;
+assign data = enable ? mem[address] : {DATA_BUS_WIDTH{1'bz}};
 
 endmodule

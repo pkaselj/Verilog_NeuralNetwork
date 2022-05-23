@@ -18,11 +18,18 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module BusArbiter(
-	input wire [7:0] 	neuron_read_address_ext,
+module BusArbiter
+#(
+parameter DATA_BUS_WIDTH = 8,
+parameter ADDRESS_BUS_WIDTH = 16)
+(
+	input wire [ADDRESS_BUS_WIDTH - 1:0]
+							neuron_read_address_ext,
 							neuron_read_address_int,
 							neuron_write_address_ext,
 							neuron_write_address_int,
+							
+	input wire [DATA_BUS_WIDTH - 1:0] 
 							neuron_write_data_ext,
 							neuron_write_data_int,
 					
@@ -31,9 +38,11 @@ module BusArbiter(
 							
 	input wire			select_external,
 	
-	output wire [7:0] neuron_read_address,
+	output wire [ADDRESS_BUS_WIDTH - 1:0]
+							neuron_read_address,
 							neuron_write_address,
-							neuron_write_data,
+							
+	output wire [DATA_BUS_WIDTH - 1:0]  neuron_write_data,
 					
 	output wire			neuron_write_enable
 );

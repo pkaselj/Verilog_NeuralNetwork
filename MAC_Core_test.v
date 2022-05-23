@@ -35,7 +35,9 @@ module MAC_Core_test;
 	wire [7:0] out;
 
 	// Instantiate the Unit Under Test (UUT)
-	MAC_Core uut (
+	MAC_Core
+	#(.N(8), .N_ACC(32))
+	uut (
 		.weight(weight), 
 		.in(in), 
 		.oe(oe), 

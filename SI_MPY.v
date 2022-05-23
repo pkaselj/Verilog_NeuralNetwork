@@ -38,21 +38,21 @@ always @(*)
 	if(sgnA == 0)
 		unsignedA = A;
 	else
-		unsignedA = ~(A) + 1; // 2's complement
+		unsignedA = ~(A) + 1'b1; // 2's complement
 		
 always @(*)
 	if(sgnB == 0)
 		unsignedB = B;
 	else
-		unsignedB = ~(B) + 1; // 2's complement
+		unsignedB = ~(B) + 1'b1; // 2's complement
 
 assign sgnResult = sgnA ^ sgnB;
 assign unsignedResult = unsignedA * unsignedB;
 
 always @(*)
 	if(sgnResult == 0)
-		A_MPY_B = {0, unsignedResult};
+		A_MPY_B = {1'b0, unsignedResult};
 	else
-		A_MPY_B = ~({0, unsignedResult}) + 1; // 2's complement
+		A_MPY_B = ~({1'b0, unsignedResult}) + 1'b1; // 2's complement
 
 endmodule
