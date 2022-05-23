@@ -24,28 +24,39 @@
 
 module NeuralAccelerator_test;
 
-	// Inputs
-	reg clk;
-	reg reset;
-
-	// Outputs
-	wire [7:0] result_base_address, result_word_count, data_out;
-	wire finished;
+	reg clk, reset;
+	reg [7:0] 		neuron_ram_write_adr_ext,
+						neuron_ram_write_data_ext,
+						neuron_ram_read_adr_ext;
+	reg 	 			neuron_ram_wr_en_ext;
+	
+	wire 				finished;
+	wire [7:0] 		result_base_address,
+						result_word_count,
+						neuron_ram_read_data_ext;
 
 	// Instantiate the Unit Under Test (UUT)
 	NeuralAccelerator uut (
-		.clk(clk), 
+		.clk(clk),
 		.reset(reset),
-		.finished(finished),		
+		.neuron_ram_write_adr_ext(neuron_ram_write_adr_ext),
+		.neuron_ram_write_data_ext(neuron_ram_write_data_ext),
+		.neuron_ram_read_adr_ext(neuron_ram_read_adr_ext),
+		.neuron_ram_wr_en_ext(neuron_ram_wr_en_ext),
+		.finished(finished),
 		.result_base_address(result_base_address),
 		.result_word_count(result_word_count),
-		.data_out(data_out)
+		.neuron_ram_read_data_ext(neuron_ram_read_data_ext)
 	);
 
 	initial begin
 		// Initialize Inputs
 		clk = 0;
 		reset = 1;
+		neuron_ram_read_adr_ext = 20;
+		neuron_ram_write_adr_ext = 0;
+		neuron_ram_write_data_ext = 0;
+		neuron_ram_wr_en_ext = 0;
 		
 		#5; reset = 0;
 		

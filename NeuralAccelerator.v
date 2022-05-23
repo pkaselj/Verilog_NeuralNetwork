@@ -21,13 +21,14 @@
 module NeuralAccelerator(
 	input clk,
 	input reset,
-	input [7:0] neuron_ram_write_adr_ext,
-					neuron_ram_write_data_ext,
-					neuron_ram_read_data_ext,
-	input 	 	neuron_ram_wr_en_ext,
-	output finished,
+	input [7:0] 	neuron_ram_write_adr_ext,
+						neuron_ram_write_data_ext,
+						neuron_ram_read_adr_ext,
+	input 	 		neuron_ram_wr_en_ext,
+	output 			finished,
 	output [7:0] 	result_base_address,
-						result_word_count
+						result_word_count,
+						neuron_ram_read_data_ext
 );
 
 parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
@@ -150,7 +151,36 @@ always @(posedge clk) begin
 	neuron_finished_2 <= neuron_finished_1;
 end
 
+wire select_external_bus;
+assign select_external_bus = reset | finished;
 
+assign neuron_ram_read_data_ext = value;
+
+wire [7:0] 	neuron_read_address_bus_interface,
+				neuro_write_address_bus_interface,
+				neuro_write_data_bus_interface;
+wire 			neuro_wr_en_wire_interface;
+
+BusArbiter Arbiter(
+		.neuron_read_address_ext(neuron_ram_read_adr_ext),
+		.neuron_read_address_int(neuro_read_address),
+		
+		.neuron_write_address_ext(neuron_ram_write_adr_ext),
+		.neuron_write_address_int(neuro_write_address_2),
+		
+		.neuron_write_data_ext(neuron_ram_write_data_ext),
+		.neuron_write_data_int(out),
+		
+		.neuron_write_enable_ext(neuron_ram_wr_en_ext),
+		.neuron_write_enable_int(neuron_finished_2),
+		
+		.select_external(select_external_bus),
+		
+		.neuron_read_address(neuron_read_address_bus_interface),
+		.neuron_write_address(neuro_write_address_bus_interface),
+		.neuron_write_data(neuro_write_data_bus_interface),
+		.neuron_write_enable(neuro_wr_en_wire_interface)
+);
 
 ControlUnit CU(
 	.clk(clk),
@@ -191,15 +221,15 @@ Instruction_RAM Instruction_RAM_instance(
 );
 
  Neuron_DP_RAM Neuron_DP_RAM_instance(
-	.read_address(neuro_read_address), 
-	.write_address(neuro_write_address_2), 
-	.write_data(out), 
+	.read_address(neuron_read_address_bus_interface), 
+	.write_address(neuro_write_address_bus_interface), 
+	.write_data(neuro_write_data_bus_interface), 
 	.oe(1), 
-	.wre(neuron_finished_2),
+	.wre(neuro_wr_en_wire_interface),
 	.clk(clk),
-	.read_data(value),
+	.read_data(value)
 	/* DEBUG */
-	.read_data_offset20(data_out)
+	// .read_data_offset20(data_out)
 );
 
 assign current_data = out;
