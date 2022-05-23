@@ -51,6 +51,8 @@ module SI_MPY_test;
 		#10 A = 6; B = -2;
 		#10 A = 10; B = 21;
 		#10 A = -10; B = 21;
+		#10 A = 8'b0000_0001; B = 8'b1000_0011;
+		#10 A = 8'b0000_0010; B = 8'b1111_1101;
 		#10 $stop;
 
 		// Wait 100 ns for global reset to finish
