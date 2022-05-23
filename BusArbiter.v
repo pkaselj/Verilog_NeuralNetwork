@@ -19,23 +19,23 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module BusArbiter(
-	wire [7:0] 	neuron_read_address_ext,
-					neuron_read_address_int,
-					neuron_write_address_ext,
-					neuron_write_address_int,
-					neuron_write_data_ext,
-					neuron_write_data_int,
+	input wire [7:0] 	neuron_read_address_ext,
+							neuron_read_address_int,
+							neuron_write_address_ext,
+							neuron_write_address_int,
+							neuron_write_data_ext,
+							neuron_write_data_int,
 					
-	wire			neuron_write_enable_ext,
+	input wire			neuron_write_enable_ext,
+							neuron_write_enable_int,
+							
+	input wire			select_external,
 	
-					neuron_write_enable_int,
-	wire			select_external,
-	
-	output wire [7:0] 	neuron_read_address,
-								neuron_write_address,
-								neuron_write_data,
+	output wire [7:0] neuron_read_address,
+							neuron_write_address,
+							neuron_write_data,
 					
-	output wire				neuron_write_enable
+	output wire			neuron_write_enable
 );
 
 assign {

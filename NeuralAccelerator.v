@@ -21,12 +21,13 @@
 module NeuralAccelerator(
 	input clk,
 	input reset,
+	input [7:0] neuron_ram_write_adr_ext,
+					neuron_ram_write_data_ext,
+					neuron_ram_read_data_ext,
+	input 	 	neuron_ram_wr_en_ext,
 	output finished,
-	/* ADD INPUT ADDRESS AND DATA LINES + WE */
-	output [7:0] data_out,
 	output [7:0] 	result_base_address,
-						result_word_count,
-						current_data
+						result_word_count
 );
 
 parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
