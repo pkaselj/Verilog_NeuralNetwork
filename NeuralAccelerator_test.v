@@ -69,5 +69,11 @@ module NeuralAccelerator_test;
 	always begin
 		#2 clk = ~clk;
 	end
+	
+	always @(posedge clk) begin
+		if(finished) begin
+			neuron_ram_read_adr_ext <= neuron_ram_read_adr_ext + 1;
+		end
+	end
 endmodule
 
