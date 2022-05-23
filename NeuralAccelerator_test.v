@@ -25,13 +25,13 @@
 module NeuralAccelerator_test;
 
 	reg clk, reset;
-	reg [10:0] 		neuron_ram_write_adr_ext,
+	reg [9:0] 		neuron_ram_write_adr_ext,
 						neuron_ram_read_adr_ext;
 	reg [7:0]		neuron_ram_write_data_ext;
 	reg 	 			neuron_ram_wr_en_ext;
 	
 	wire 				finished;
-	wire [10:0] 	result_base_address,
+	wire [9:0] 	result_base_address,
 						result_word_count;
 	wire [7:0]		neuron_ram_read_data_ext;
 

@@ -51,6 +51,7 @@ module SI_DOWNSCALER_QUANT_test;
 		#10 in = -316109;
 		#10 in = 200000;
 		#10 in = -71672;
+		#10 in = -500000;
 		#10 $stop;
         
 		// Add stimulus here

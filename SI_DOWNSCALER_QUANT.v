@@ -93,13 +93,18 @@ always @(*) begin
 	//	overflows/underflows
 	if (is_overflow) begin
 		unoffset_out = (is_input_number_negative) ? MIN_OUT_SI : MAX_OUT_SI;
-	end else	if (is_over_0_5_frac == 1)  	// Round to neares integer
+	end else begin
+	
+	if (is_over_0_5_frac == 1)  	// Round to neares integer
 		unoffset_out = preresult[N_IN - 1:0] + 1;		// ! Used to prevent down-rounding
 	else
 		unoffset_out = preresult[N_IN - 1:0];
 		
 	if(is_input_number_negative)
 		unoffset_out = ~unoffset_out + 1;
+	
+	end
+		
 		
 end
 
