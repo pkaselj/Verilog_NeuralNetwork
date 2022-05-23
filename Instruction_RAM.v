@@ -35,10 +35,10 @@ reg [7:0] mem [0:4];
 assign data = enable ? mem[address] : 8'bzzzzzzzz;
 
 initial begin
-	mem[0] = 4;
-	mem[1] = 3;
-	mem[2] = 8;
-	mem[3] = 5;
+	mem[0] = 8;
+	mem[1] = 5;
+	mem[2] = 3;
+	mem[3] = END_OF_PROGRAM;
 	mem[4] = END_OF_PROGRAM;
 end
 

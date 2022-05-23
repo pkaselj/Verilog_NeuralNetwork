@@ -53,7 +53,7 @@ module NeuralAccelerator_test;
 		// Initialize Inputs
 		clk = 0;
 		reset = 1;
-		neuron_ram_read_adr_ext = 20;
+		neuron_ram_read_adr_ext = 0;
 		neuron_ram_write_adr_ext = 0;
 		neuron_ram_write_data_ext = 0;
 		neuron_ram_wr_en_ext = 0;
