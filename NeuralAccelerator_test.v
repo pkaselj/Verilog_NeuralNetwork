@@ -54,9 +54,29 @@ module NeuralAccelerator_test;
 		clk = 0;
 		reset = 1;
 		neuron_ram_read_adr_ext = 0;
+		neuron_ram_wr_en_ext = 1;
+		
+		#1
 		neuron_ram_write_adr_ext = 0;
-		neuron_ram_write_data_ext = 0;
-		neuron_ram_wr_en_ext = 0;
+		neuron_ram_write_data_ext = 8'd2;
+		
+		#4
+		neuron_ram_write_adr_ext = 1;
+		neuron_ram_write_data_ext = 8'd3;
+		
+		#4
+		neuron_ram_write_adr_ext = 2;
+		neuron_ram_write_data_ext = 8'd7;
+		
+		#4
+		neuron_ram_write_adr_ext = 3;
+		neuron_ram_write_data_ext = 8'd4;
+		
+		#4
+		neuron_ram_write_adr_ext = 4;
+		neuron_ram_write_data_ext = 8'd1;
+		
+		#4 neuron_ram_wr_en_ext = 0;
 		
 		#5; reset = 0;
 		
