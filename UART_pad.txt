@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (nt64)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Fri Jul 01 18:51:41 2022
+Fri Jul 08 14:26:40 2022
 
 
 INFO: The IO information is provided in three file formats as part of the Place and Route (PAR) process.  These formats are:
@@ -12,7 +12,7 @@ INFO: The IO information is provided in three file formats as part of the Place 
 INPUT FILE:       UART_map.ncd
 OUTPUT FILE:      UART_pad.txt
 PART TYPE:        xc3s500e
-SPEED GRADE:      -4
+SPEED GRADE:      -5
 PACKAGE:          fg320
 
 Pinout by Pin Number:

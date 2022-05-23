@@ -24,7 +24,7 @@ output tx,
 output cs_clk
 );
 
-parameter image_byte_size = 9;
+parameter image_byte_size = 784;
 
 wire [7:0] data_in;
 reg en_rx, en_tx;
@@ -40,16 +40,16 @@ assign cs_clk = abr[15];
 reg reset;
 reg reset_from_tx, reset_from_rx;
 wire finished;
-wire [7:0] result_base_address;			//adresa od koje kreces citat - output
-wire [7:0] result_word_count;				//broj adreasa - output		
+wire [9:0] result_base_address;			//adresa od koje kreces citat - output
+wire [9:0] result_word_count;				//broj adreasa - output		
 wire [7:0] data_out_nn_acceler;
-reg [7:0] neuron_ram_write_adr_ext;
+reg [9:0] neuron_ram_write_adr_ext;
 //reg [7:0] neuron_ram_write_data_ext;
 reg neuron_ram_wr_en_ext;
 reg [9:0] image_byte_counter;
 reg [3:0] read_counter = 0;
 //reg tx_busy;
-reg [7:0] read_result_address;
+reg [9:0] read_result_address;
 //assign reset = reset_ext;
 reg neuron_ram_wr_en_ext_1;
 reg en_tx_1;

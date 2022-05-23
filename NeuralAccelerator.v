@@ -23,9 +23,9 @@ module NeuralAccelerator
 parameter IP_DATA_BUS_WIDTH = 16,
 parameter IP_ADDRESS_BUS_WIDTH = 8,
 parameter NEURON_DATA_BUS_WIDTH = 8,
-parameter NEURON_ADDRESS_BUS_WIDTH = 11,
+parameter NEURON_ADDRESS_BUS_WIDTH = 10,
 parameter WEIGHTS_DATA_BUS_WIDTH = 8,
-parameter WEIGHTS_ADDRESS_BUS_WIDTH = 15
+parameter WEIGHTS_ADDRESS_BUS_WIDTH = 13
 )
 (
 	input clk,
@@ -46,7 +46,7 @@ parameter WEIGHTS_ADDRESS_BUS_WIDTH = 15
 
 parameter [NEURON_ADDRESS_BUS_WIDTH - 1:0]
 						NEURO_RW_BASE_LOW = 0,
-						NEURO_RW_BASE_HIGH = 1000;
+						NEURO_RW_BASE_HIGH = 900;
 
 wire [NEURON_ADDRESS_BUS_WIDTH - 1:0]
 				neuro_write_address,
