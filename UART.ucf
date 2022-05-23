@@ -1,0 +1,6 @@
+
+
+NET "clk" LOC = C9;
+NET "rx" LOC = R7 | IOSTANDARD = LVTTL;
+NET "tx" LOC = M14 | IOSTANDARD = LVTTL | DRIVE = 8 | SLEW = SLOW;
+NET "cs_clk" LOC = "H15" | IOSTANDARD = LVTTL | DRIVE = 8 | SLEW = FAST ;
