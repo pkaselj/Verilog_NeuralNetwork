@@ -23,7 +23,7 @@ input clk, reset, forget,
 output AG_rst, AG_read, ALU_rst
 );
 
-wire ALU_forget;
+// wire ALU_forget;
 
 parameter
 	STATE_RESET_0 = 0,
@@ -37,16 +37,15 @@ parameter
 	EVENT_FORGET = 2;
 	
 parameter
-	OUT_DEFAULT = 4'b1011,
-	OUT_AG_RST = 4'b1000,
-	OUT_AG_READ = 4'b0100,
-	OUT_ALU_RST = 4'b0010,
-	OUT_ALU_FORGET = 4'b0001;
+	OUT_DEFAULT = 4'b101,
+	OUT_AG_RST = 4'b100,
+	OUT_AG_READ = 4'b010,
+	OUT_ALU_RST = 4'b001;
 
 reg [7:0] state, next_state;
-reg [3:0] out, next_out;
+reg [2:0] out, next_out;
 
-assign {AG_rst, AG_read, ALU_rst, ALU_forget} = out;
+assign {AG_rst, AG_read, ALU_rst} = out;
 
 initial begin
 	state = STATE_RESET_0;

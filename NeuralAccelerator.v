@@ -26,9 +26,9 @@ module NeuralAccelerator(
 						neuron_ram_read_adr_ext,
 	input 	 		neuron_ram_wr_en_ext,
 	output 			finished,
-	output [7:0] 	result_base_address,
-						result_word_count,
-						neuron_ram_read_data_ext
+	output [7:0] 	neuron_ram_read_data_ext,
+	output reg [7:0] result_base_address,
+						  result_word_count
 );
 
 parameter [7:0] 	NEURO_RW_BASE_LOW = 0,
@@ -40,12 +40,15 @@ wire [7:0] 	neuro_write_address,
 				weight,
 				value;
 				
-reg [7:0]   neuro_read_base,
-				neuro_write_base,
+//reg [7:0]   neuro_read_base,
+reg [7:0]   neuro_write_base,
 				weight_read_base,
 				instruction_pointer;
 				
 wire forget;
+
+wire hold;
+assign hold = reset | finished;
 
 wire [7:0] out;
 
@@ -53,7 +56,7 @@ wire [7:0] Nk;
 wire finished_layer, neuron_finished;
 wire [7:0] next_ip;
 
-reg finished_layer_1, finished_layer_2;
+//reg finished_layer_1 /*, finished_layer_2*/;
 reg neuron_finished_1, neuron_finished_2;
 reg [7:0] neuro_write_address_1, neuro_write_address_2;
 
@@ -78,9 +81,13 @@ end
 parameter [7:0] 	END_OF_PROGRAM = 8'b1111_1111;
 assign program_finished = (current_layer_size == END_OF_PROGRAM);
 
-assign result_base_address = neuro_write_base;
-assign result_word_count = previous_layer_size;
 
+always @(posedge clk) begin
+	if(!hold) begin
+		result_base_address <= neuro_write_base;
+		result_word_count <= previous_layer_size;
+	end
+end
 
 // assign forget = neuro_write_address == neuro_write_base;
 // assign forget = neuron_finished_2 | ALU_forget;
@@ -89,12 +96,12 @@ assign forget = neuron_finished_2;
 assign next_ip = (reset) ? 0 : (finished_layer | AG_read) ? instruction_pointer + 1 : instruction_pointer;
 
 initial begin
-	neuro_read_base = NEURO_RW_BASE_LOW;
+//	neuro_read_base = NEURO_RW_BASE_LOW;
 	neuro_write_base = NEURO_RW_BASE_HIGH;
 	weight_read_base = 0;
 	instruction_pointer = 0;
-	finished_layer_1 = 0;
-	finished_layer_2 = 0;
+//	finished_layer_1 = 0;
+//	finished_layer_2 = 0;
 	neuro_write_address_1 = NEURO_RW_BASE_LOW;
 	neuro_write_address_2 = NEURO_RW_BASE_LOW;
 	finished_1 = 0;
@@ -124,9 +131,11 @@ assign next_neuro_write_base_address = (is_IP_even) ? NEURO_RW_BASE_LOW : NEURO_
 assign next_weight_read_base_address = (reset) ? 0 : (finished_layer) ? weight_read_address + 1 : weight_read_base;
 
 always @(posedge clk) begin
-	neuro_read_base <= next_neuro_read_base_address;
-	neuro_write_base <= next_neuro_write_base_address;
-	weight_read_base <= next_weight_read_base_address;
+//	neuro_read_base <= next_neuro_read_base_address;
+	if(!hold) begin
+		neuro_write_base <= next_neuro_write_base_address;
+		weight_read_base <= next_weight_read_base_address;
+	end
 end
 
 //always @(posedge clk) begin
@@ -141,8 +150,8 @@ always @(posedge clk) instruction_pointer <= next_ip;
 
 
 always @(posedge clk) begin
-	finished_layer_1 <= finished_layer;
-	finished_layer_2 <= finished_layer_1;
+//	finished_layer_1 <= finished_layer;
+//	finished_layer_2 <= finished_layer_1;
 end
 
 
@@ -232,7 +241,7 @@ Instruction_RAM Instruction_RAM_instance(
 	// .read_data_offset20(data_out)
 );
 
-assign current_data = out;
+//assign current_data = out;
 
  MAC_Core ALU (
 	.weight(weight),

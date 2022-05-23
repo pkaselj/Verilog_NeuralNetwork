@@ -16,7 +16,9 @@ module UART_TX(
 	parameter state_start = 2'b01;
 	parameter state_data = 2'b10;
 	parameter state_stop = 2'b11;
-	parameter clk_per_bit = 5208; //Must be set correctly: 
+//	parameter clk_per_bit = 5208;
+	parameter clk_per_bit = 4;
+										//Must be set correctly: 
 										 //clk_per_bit = clk_frequency / baud_rate
 										 //max is 65535
 

@@ -16,9 +16,12 @@ module UART_RX(
 	parameter state_start = 2'b01;
 	parameter state_data = 2'b10;
 	parameter state_stop = 2'b11;
-	parameter clk_per_bit = 5208; //Must be set correctly: 
+//	parameter clk_per_bit = 5208;
+	parameter clk_per_bit = 4;
+										//Must be set correctly: 
 										 //clk_per_bit = clk_frequency / baud_rate
 										 //max is 65535
+										 //9600 - 5208
 
 
 	reg [15:0] clk_count;
@@ -39,7 +42,7 @@ module UART_RX(
 				clk_count <= 0;
 				index <= 0;
 				done <= 0;			
-				if (rx == 0) begin
+				if (rx == 0 && enable) begin
 					state <= state_start;
 				end
 				else begin 
@@ -92,6 +95,7 @@ module UART_RX(
 					done <= 1;
 					clk_count <= 0;
 					state <= state_idle;
+					data_out <= data_temp; 
 				end
 				
 			end
@@ -103,9 +107,5 @@ module UART_RX(
 			end
 		endcase
 	end
-	
-	always@(posedge clk) begin
-		if(done)
-			data_out <= data_temp; 
-	end
+
 endmodule

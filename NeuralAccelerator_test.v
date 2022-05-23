@@ -60,7 +60,8 @@ module NeuralAccelerator_test;
 		
 		#5; reset = 0;
 		
-		#500 $stop;
+		#300 reset = 1;
+		#15$stop;
         
 		// Add stimulus here
 

@@ -4,10 +4,10 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   16:48:05 05/25/2022
+// Create Date:   12:56:01 06/08/2022
 // Design Name:   UART
-// Module Name:   C:/Users/Student/Desktop/Verilog_NeuralNetwork-master/NeRadi-master/UART_test.v
-// Project Name:  NeRadi-master
+// Module Name:   C:/Users/Student/Desktop/jn/plsradi_jr/UART_test.v
+// Project Name:  plsradi_jr
 // Target Device:  
 // Tool versions:  
 // Description: 
@@ -40,31 +40,127 @@ module UART_test;
 
 	initial begin
 		// Initialize Inputs
-		clk = 0;
 		rx = 1;
+		clk = 0;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-      	
+        
 		// Add stimulus here
-		 
-		#10416 rx <= 0; //start
-		#10416 rx <= 0; 
-		#10416 rx <= 1;
-		#10416 rx <= 0;
-		#10416 rx <= 1;
-		#10416 rx <= 0;
-		#10416 rx <= 1;
-		#10416 rx <= 0;
-		#10416 rx <= 1;
-		#10416 rx <= 1; //stop 
+		//4
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//7
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//2
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//3
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
 		
 		
-		#1000000 $stop;
-
+		//14
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//27
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//99
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//123
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 1;
+		
+		//1
+		#8 rx = 0;
+		#8 rx = 1;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 0;
+		#8 rx = 1;
+		
 	end
-   always begin
-		#1 clk <= ~clk;
+   
+	
+	always begin
+		#1 clk = ~clk;
 	end
 endmodule
 
