@@ -23,17 +23,21 @@ module SI_DOWNSCALER_QUANT
 	parameter N_IN = 32,
 	parameter N_OUT = 8,
 	parameter M0_0Q32 = 1932735283,
-	parameter SHIFT = 10
+	parameter SHIFT = 10,
+	parameter OFFSET = 22
 )
 (
 	input [N_IN - 1: 0] in,
-	output reg [N_OUT - 1: 0] out
+	output [N_OUT - 1: 0] out
 );
 
 localparam N_INTERM = 2 * N_IN;
 
 wire [N_INTERM -1 : 0] mpy_result, in_upscaled, M0_wire;
+wire [N_OUT - 1: 0] OFFSET_wire;
+
 assign M0_wire = M0_0Q32;
+assign OFFSET_wire = OFFSET;
 
 SI_UPSCALER
 #(
@@ -45,6 +49,7 @@ up1
 	.in(in),
 	.out(in_upscaled)
 );
+
 
 SI_MPY #(N_INTERM) multiplicator (
 	.A(in_upscaled),
@@ -79,20 +84,31 @@ end
 localparam MAX_OUT_SI = {1'b0, {(N_OUT - 1){1'b1}} };
 localparam MIN_OUT_SI = {1'b1, {(N_OUT - 1){1'b0}} };
 
+reg [N_OUT - 1: 0] unoffset_out;
+wire [N_OUT - 1: 0] offset_out;
+
 always @(*) begin
 
 	// Clamp to MAX or MIN if output number
 	//	overflows/underflows
 	if (is_overflow) begin
-		out = (is_input_number_negative) ? MIN_OUT_SI : MAX_OUT_SI;
+		unoffset_out = (is_input_number_negative) ? MIN_OUT_SI : MAX_OUT_SI;
 	end else	if (is_over_0_5_frac == 1)  	// Round to neares integer
-		out = preresult[N_IN - 1:0] + 1;		// ! Used to prevent down-rounding
+		unoffset_out = preresult[N_IN - 1:0] + 1;		// ! Used to prevent down-rounding
 	else
-		out = preresult[N_IN - 1:0];
+		unoffset_out = preresult[N_IN - 1:0];
 		
 	if(is_input_number_negative)
-		out = ~out + 1;
+		unoffset_out = ~unoffset_out + 1;
 		
 end
+
+SI_ADD #(N_OUT) adder (
+	.A(unoffset_out),
+	.B(OFFSET_wire),
+	.A_ADD_B(offset_out)
+);
+
+assign out = (is_overflow) ? unoffset_out : offset_out;
 
 endmodule

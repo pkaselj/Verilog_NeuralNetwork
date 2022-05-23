@@ -93,7 +93,8 @@ SI_DOWNSCALER_QUANT
 	.N_IN(N_ACC),
 	.N_OUT(N),
 	.M0_0Q32(1932735283), // 0.45 (0Q32)
-	.SHIFT(10)
+	.SHIFT(10),
+	.OFFSET(22)
 )
 downscaler
 (
