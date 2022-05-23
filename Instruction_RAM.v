@@ -24,6 +24,8 @@ module Instruction_RAM(
 	output [7:0] data
 );
 
+parameter [7:0] 	END_OF_PROGRAM = 8'b1111_1111;
+
 reg [7:0] mem [127:0];
 
 assign data = enable ? mem[address] : 8'bzzzzzzzz;
@@ -33,6 +35,7 @@ initial begin
 	mem[1] = 3;
 	mem[2] = 8;
 	mem[3] = 5;
+	mem[4] = END_OF_PROGRAM;
 end
 
 endmodule

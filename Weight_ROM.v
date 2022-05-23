@@ -61,8 +61,8 @@ initial begin
 	mem[31] = 2;
 end
 
-assign data = enable ? mem[address] : 8'bzzzzzzzz;
+//assign data = enable ? mem[address] : 8'bzzzzzzzz;
 // DEBUG
-//assign data = enable ? mem[{5'b0, address[2:0]}] : 8'bzzzzzzzz;
+assign data = enable ? mem[{5'b0, address[2:0]}] : 8'bzzzzzzzz;
 
 endmodule
