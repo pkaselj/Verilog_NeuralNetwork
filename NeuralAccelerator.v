@@ -46,6 +46,7 @@ wire [7:0] next_ip;
 
 reg finished_1, finished_2;
 reg neuron_finished_1, neuron_finished_2;
+reg [7:0] neuro_write_address_1, neuro_write_address_2;
 
 wire AG_rst, AG_read, ALU_rst;
 
@@ -62,6 +63,18 @@ initial begin
 	instruction_pointer = 0;
 	finished_1 = 0;
 	finished_2 = 0;
+	neuro_write_address_1 = NEURO_RW_BASE_LOW;
+	neuro_write_address_2 = NEURO_RW_BASE_LOW;
+end
+
+always @(posedge clk) begin
+	if(reset) begin
+		neuro_write_address_1 <= NEURO_RW_BASE_LOW;
+		neuro_write_address_2 <= NEURO_RW_BASE_LOW;
+	end else begin
+		neuro_write_address_1 <= neuro_write_address;
+		neuro_write_address_2 <= neuro_write_address_1;
+	end
 end
 
 wire [7:0] 	next_neuro_read_base_address,
@@ -144,10 +157,10 @@ Weight_ROM Weight_ROM_instance(
 
 Neuron_DP_RAM Neuron_DP_RAM_instance(
 	.read_address(neuro_read_address), 
-	.write_address(neuro_write_address), 
+	.write_address(neuro_write_address_2), 
 	.write_data(out), 
 	.oe(1'b1), 
-	.wre(1'b0),
+	.wre(neuron_finished_2),
 	.clk(clk),
 	.read_data(value)
 );

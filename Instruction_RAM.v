@@ -29,10 +29,10 @@ reg [7:0] mem [127:0];
 assign data = enable ? mem[address] : 8'bzzzzzzzz;
 
 initial begin
-	mem[0] = 2;
+	mem[0] = 4;
 	mem[1] = 3;
-	mem[2] = 2;
-	mem[3] = 3;
+	mem[2] = 8;
+	mem[3] = 5;
 end
 
 endmodule

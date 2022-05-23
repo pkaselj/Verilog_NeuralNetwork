@@ -29,15 +29,16 @@ reg [7:0] mem [127:0];
 initial begin
 	mem[0] = 10;
 	mem[1] = 11;
-	mem[2] = 10;
-	mem[3] = 11;
+	mem[2] = 5;
+	mem[3] = 2;
 	mem[4] = 4;
 	mem[5] = 5;
 	mem[6] = 3;
 	mem[7] = 2;
 end
 
-assign read_data = oe ? mem[read_address] : 8'bzzzzzzzz;
+assign read_data = oe ? (wre && (read_address == write_address)) ? write_data : mem[read_address]
+								: 8'bzzzzzzzz;
 
 always @(posedge clk) begin
 	if(wre)
