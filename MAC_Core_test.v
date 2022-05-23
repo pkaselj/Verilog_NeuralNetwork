@@ -41,13 +41,14 @@ module MAC_Core_test;
 		.oe(oe), 
 		.reset(reset), 
 		.clk(clk), 
-		.out(out)
+		.out(out),
+		.forget(0)
 	);
 
 	initial begin
 		// Initialize Inputs
-		weight = 3;
-		in = 4;
+		weight = 0;
+		in = 0;
 		reset = 0;
 		oe = 0;
 		clk = 0;
@@ -57,8 +58,16 @@ module MAC_Core_test;
 		#10 reset = 1;
 		
 		#10 reset = 0;	weight = 2; in = 2; oe = 0;
+		#10 reset = 0;	weight = 2; in = 2; oe = 0;
+		#10 reset = 0;	weight = 2; in = 2; oe = 0;
+		#1 oe = 1;
 		
-		#4  oe = 1;
+		#10 reset = 1;
+		
+		#10 reset = 0;	weight = 2; in = 2; oe = 0;
+		#10 reset = 0;	weight = -2; in = 2; oe = 0;
+		#10 reset = 0;	weight = -2; in = 2; oe = 0;
+		#1  oe = 1;
 		
 		#10 $stop;
 
