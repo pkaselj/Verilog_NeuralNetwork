@@ -30,9 +30,7 @@ module UART_TX_test;
 	reg [7:0] data_in;
 
 	wire tx;
-	wire [1:0] test_state;
 	wire done; 
-	wire test;
 
 	// Instantiate the Unit Under Test (UUT)
 	UART_TX uut (
@@ -40,9 +38,7 @@ module UART_TX_test;
 		.enable(enable),
 		.data_in(data_in),
 		.tx(tx),
-		.test_state(test_state),
-		.done(done),
-		.test(test)
+		.done(done)
 	); 
 
 	initial begin
